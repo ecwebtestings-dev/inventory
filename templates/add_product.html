@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product{% endblock %}
+{% block page_name %}Add Product{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <p class="eyebrow">INVENTORY MANAGEMENT</p>
+        <h1>Add New Product</h1>
+        <p class="page-description">
+            Enter the product details to Add
+        </p>
+    </div>
+</div>
+
+<form class="form-card" method="post">
+
+    <div class="form-section-heading">
+        <h2>Product Information</h2>
+        <p>Complete all the required fields below.</p>
+    </div>
+
+    {% include "product_fields.html" %}
+
+    <div class="form-actions">
+        <button class="btn" type="submit">
+            Save Product
+        </button>
+
+        <a class="cancel-btn" href="{{ url_for('index') }}">
+            Cancel
+        </a>
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+
+
+
+<!-- SHARED INPUTS FOR ADDING AND EDITING PRODUCTS. -->
+<div class="form-grid">
+
+    <label class="form-field full-width">
+        Product Name
+        <input
+            type="text"
+            name="product_name"
+            maxlength="100"
+            placeholder="Enter product name"
+            required
+            value="{{ product.product_name or '' }}"
+        >
+    </label>
+
+    <label class="form-field">
+        Category
+        <input
+            type="text"
+            name="category"
+            maxlength="50"
+            placeholder="Enter category"
+            required
+            value="{{ product.category or '' }}"
+        >
+    </label>
+
+    <label class="form-field">
+        Supplier
+        <input
+            type="text"
+            name="supplier"
+            maxlength="100"
+            placeholder="Enter supplier name"
+            required
+            value="{{ product.supplier or '' }}"
+        >
+    </label>
+
+    <label class="form-field">
+        Unit Price
+        <input
+            type="number"
+            name="unit_price"
+            step="0.01"
+            min="0"
+            placeholder="0.00"
+            required
+            value="{{ product.unit_price if product.unit_price is not none else '' }}"
+        >
+    </label>
+
+    <label class="form-field">
+        Quantity in Stock
+        <input
+            type="number"
+            name="quantity_in_stock"
+            min="0"
+            step="1"
+            placeholder="Enter quantity"
+            required
+            value="{{ product.quantity_in_stock if product.quantity_in_stock is not none else '' }}"
+        >
+    </label>
+
+    <label class="form-field">
+
+        Reorder Level
+        <input
+            type="number"
+            name="reorder_level"
+            min="0"
+            step="1"
+            placeholder="Enter reorder level"
+            required
+            value="{{ product.reorder_level if product.reorder_level is not none else '' }}"
+        >
+    </label>
+
+</div>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Inventory{% endblock %} | Solver Uganda</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    {% set ep = request.endpoint %}
+    {% set low = request.args.get('low') == '1' %}
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <a class="brand" href="{{ url_for('index') }}">
+                <span>SOLVER UGANDA</span>
+            </a>
+
+            <div class="sidebar-label">MAIN MENU</div>
+
+            <nav class="nav">
+
+                <a href="{{ url_for('index') }}"
+                   class="{{ 'active' if ep == 'index' and not low else '' }}">
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ url_for('add_product') }}"
+                   class="{{ 'active' if ep == 'add_product' else '' }}">
+                    <span>Add Product</span>
+                </a>
+            </nav>
+        </aside>
+
+        
+
+        <!-- MAIN CONTENT -->
+        <main class="main-area">
+            <header class="topbar">
+
+                <div class="breadcrumb">
+                    <span>Inventory</span>
+                    <span class="breadcrumb-divider">/</span>
+                    <strong>{% block page_name %}Dashboard{% endblock %}</strong>
+                </div>
+
+               
+            </header>
+
+            <section class="content">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+
+            </section>
+
+            <footer class="footer">
+                Inventory Management System
+                <span>© 2026 Solver Uganda</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

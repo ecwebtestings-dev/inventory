@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block content %}
+
+<h1>Edit Product</h1>
+
+<form class="card form" method="post">
+
+
+
+    {% include "product_fields.html" %}
+
+    <div class="buttons">
+        <button class="btn" type="submit">
+            Save Changes
+        </button>
+        <a class="link" href="{{ url_for('index') }}">
+            Cancel
+        </a>
+    </div>
+
+</form>
+
+{% endblock %}

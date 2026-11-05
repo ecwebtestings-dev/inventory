@@ -1,0 +1,165 @@
+
+{% extends "base.html" %}
+
+{% block title %}Stock Records{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+    <div>
+        <h1>Inventory</h1>
+        <p class="page-description">
+            Manage your products and monitor available stock.
+        </p>
+    </div>
+
+    <a href="{{ url_for('add_product') }}" class="btn">
+        + Add Product
+    </a>
+</div>
+
+
+
+
+<!-- STATISTICS -->
+<section class="stats">
+
+    <div class="stat">
+        <span>Total Products</span>
+        <strong>{{ summary.total }}</strong>
+    </div>
+
+    <div class="stat">
+        <span>Low Stock</span>
+        <strong>{{ summary.low }}</strong>
+    </div>
+
+    <div class="stat">
+        <span>Stock Value</span>
+        <strong>{{ "{:,.0f}".format(summary.value) }}</strong>
+    </div>
+
+</section>
+
+
+
+
+<!-- SEARCH AND FILTER -->
+<form class="filters" method="get">
+
+    <input
+        type="search"
+        name="q"
+        value="{{ search }}"
+        placeholder="Search products, categories or suppliers"
+    >
+
+    <label class="check">
+        <input
+            type="checkbox"
+            name="low"
+            value="1"
+            {{ 'checked' if low_only }}
+        >
+        Filter low stock only
+    </label>
+
+    <button class="btn" type="submit">Filter</button>
+
+    {% if search or low_only %}
+        <a class="link" href="{{ url_for('index') }}">Clear</a>
+    {% endif %}
+
+</form>
+
+
+
+<!-- PRODUCT TABLE -->
+<div class="table-wrap">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th class="num">Unit Price</th>
+                <th class="num">In Stock</th>
+                <th class="num">Reorder</th>
+                <th>Date Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for p in products %}
+
+                {% set low = p.quantity_in_stock <= p.reorder_level %}
+
+                <tr class="{{ 'low' if low else '' }}">
+
+                    <td>{{ p.product_id }}</td>
+
+                    <td>
+                        {{ p.product_name }}
+
+                        {% if low %}
+                            <span class="badge">Low stock</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ p.category }}</td>
+                    <td>{{ p.supplier }}</td>
+
+                    <td class="num">
+                        {{ "{:,.2f}".format(p.unit_price) }}
+                    </td>
+
+                    <td class="num">{{ p.quantity_in_stock }}</td>
+
+                    <td class="num">{{ p.reorder_level }}</td>
+
+                    <td>{{ p.date_added }}</td>
+
+                    <td class="actions">
+
+                        <a
+                            class="link"
+                            href="{{ url_for('edit_product', product_id=p.product_id) }}"
+                        >
+                            Edit
+                        </a>
+
+                        <form
+                            method="post"
+                            action="{{ url_for('delete_product', product_id=p.product_id) }}"
+                            onsubmit="return confirm('Delete {{ p.product_name|e }}?');"
+                        >
+                            <button class="link danger" type="submit">
+                                Delete
+                            </button>
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+                    <td colspan="9" class="empty">
+                        No products found.
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
